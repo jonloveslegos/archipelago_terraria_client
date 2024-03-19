@@ -4,6 +4,7 @@ using Archipelago.MultiClient.Net.Enums;
 using Archipelago.MultiClient.Net.Packets;
 using Microsoft.Xna.Framework;
 using Newtonsoft.Json.Linq;
+using SeldomArchipelago.Players;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
@@ -27,6 +28,10 @@ namespace SeldomArchipelago.Systems
         List<Task<LocationInfoPacket>> locationQueue;
         ArchipelagoSession session;
         DeathLinkService deathlink;
+        bool randomize_crafting_stations = false;
+        bool randomize_pickaxes = false;
+        bool randomize_hammers = false;
+        bool randomize_crystals = false;
         bool enabled;
         int collectedItems;
         int currentItem;
@@ -96,7 +101,154 @@ namespace SeldomArchipelago.Systems
                 deathlink.OnDeathLinkReceived += ReceiveDeathlink;
             }
 
+            if ((bool)success.SlotData["randomize_crafting_stations"])
+            {
+                randomize_crafting_stations = true;
+            }
+
+            if ((bool)success.SlotData["randomize_pickaxes"])
+            {
+                randomize_pickaxes = true;
+            }
+
+            if ((bool)success.SlotData["randomize_hammers"])
+            {
+                randomize_hammers = true;
+            }
+
+            if ((bool)success.SlotData["randomize_crystals"])
+            {
+                randomize_crystals = true;
+            }
+
             slot = success.Slot;
+        }
+        public string GetBannedItemLocation(string item)
+        {
+            switch (item)
+            {
+                case "Tungsten Pickaxe": return "Obtain Silver Pickaxe";
+                case "Gold Pickaxe": return "Obtain Gold Pickaxe";
+                case "Fossil Pickaxe": return "Obtain Fossil Pickaxe";
+                case "Nightmare Pickaxe": return "Obtain Nightmare Pickaxe";
+                case "Deathbringer Pickaxe": return "Obtain Nightmare Pickaxe";
+                case "Molten Pickaxe": return "Obtain Molten Pickaxe";
+                case "Cobalt Pickaxe": return "Obtain Cobalt Pickaxe";
+                case "Palladium Pickaxe": return "Obtain Cobalt Pickaxe";
+                case "Mythril Pickaxe": return "Obtain Mythril Pickaxe";
+                case "Orichalcum Pickaxe": return "Obtain Mythril Pickaxe";
+                case "Adamantite Pickaxe": return "Obtain Adamantite Pickaxe";
+                case "Titanium Pickaxe": return "Obtain Adamantite Pickaxe";
+                case "Spectre Pickaxe": return "Obtain Spectre Pickaxe";
+                case "Spectre Hamaxe": return "Obtain Spectre Hamaxe";
+                case "Chlorophyte Pickaxe": return "Obtain Chlorophyte Pickaxe";
+                case "Pickaxe Axe": return "Obtain Pickaxe Axe";
+                case "Shroomite Digging Claw": return "Obtain Shroomite Digging Claw";
+                case "Picksaw": return "Obtain Picksaw";
+                case "Vortex Pickaxe": return "Obtain Luminite Pickaxe";
+                case "Nebula Pickaxe": return "Obtain Luminite Pickaxe";
+                case "Solar Flare Pickaxe": return "Obtain Luminite Pickaxe";
+                case "Stardust Pickaxe": return "Obtain Luminite Pickaxe";
+                case "Pwnhammer": return "Obtain Pwnhammer";
+                case "Drax": return "Obtain Drax";
+                case "Vortex Hamaxe": return "Obtain Luminite Hamaxe";
+                case "Nebula Hamaxe": return "Obtain Luminite Hamaxe";
+                case "Solar Flare Hamaxe": return "Obtain Luminite Hamaxe";
+                case "Stardust Hamaxe": return "Obtain Luminite Hamaxe";
+                case "Work Bench": return "Obtain Work Bench";
+                case "Life Crystal": return "Obtain Life Crystal";
+                case "Mana Crystal": return "Obtain Mana Crystal";
+                case "Furnace": return "Obtain Furnace";
+                case "Iron Anvil": return "Obtain Anvil";
+                case "Lead Anvil": return "Obtain Anvil";
+                case "Loom": return "Obtain Loom";
+                case "Sawmill": return "Obtain Sawmill";
+                case "Solidifier": return "Obtain Solidifier";
+                case "Hellforge": return "Obtain Hellforge";
+                case "Tinkerer's Workshop": return "Obtain Tinkerer's Workshop";
+                case "Mythril Anvil": return "Obtain Hardmode Anvil";
+                case "Orichalcum Anvil": return "Obtain Hardmode Anvil";
+                case "Adamantite Forge": return "Obtain Hardmode Forge";
+                case "Titanium Forge": return "Obtain Hardmode Forge";
+                case "Life Fruit": return "Obtain Life Fruit";
+                case "Autohammer": return "Obtain Autohammer";
+                case "Ancient Manipulator": return "Obtain Ancient Manipulator";
+                case "Chlorophyte Warhammer": return "Obtain Chlorophyte Warhammer";
+                case "The Axe": return "Obtain The Axe";
+                default: return null;
+            }
+        }
+        public bool IsBannedItem(string item)
+        {
+            switch (item)
+            {
+                case "Silver Pickaxe": return randomize_pickaxes;
+                case "Tungsten Pickaxe": return randomize_pickaxes;
+                case "Gold Pickaxe": return randomize_pickaxes;
+                case "Candy Cane Pickaxe": return randomize_pickaxes;
+                case "Fossil Pickaxe": return randomize_pickaxes;
+                case "Bone Pickaxe": return randomize_pickaxes;
+                case "Platinum Pickaxe": return randomize_pickaxes;
+                case "Reaver Shark": return randomize_pickaxes;
+                case "Nightmare Pickaxe": return randomize_pickaxes;
+                case "Deathbringer Pickaxe": return randomize_pickaxes;
+                case "Molten Pickaxe": return randomize_pickaxes;
+                case "Cobalt Pickaxe": return randomize_pickaxes;
+                case "Palladium Pickaxe": return randomize_pickaxes;
+                case "Mythril Pickaxe": return randomize_pickaxes;
+                case "Orichalcum Pickaxe": return randomize_pickaxes;
+                case "Adamantite Pickaxe": return randomize_pickaxes;
+                case "Titanium Pickaxe": return randomize_pickaxes;
+                case "Spectre Pickaxe": return randomize_pickaxes;
+                case "Spectre Hamaxe": return randomize_hammers;
+                case "Chlorophyte Pickaxe": return randomize_pickaxes;
+                case "Pickaxe Axe": return randomize_pickaxes;
+                case "Shroomite Digging Claw": return randomize_pickaxes;
+                case "Picksaw": return randomize_pickaxes;
+                case "Vortex Pickaxe": return randomize_pickaxes;
+                case "Nebula Pickaxe": return randomize_pickaxes;
+                case "Solar Flare Pickaxe": return randomize_pickaxes;
+                case "Stardust Pickaxe": return randomize_pickaxes;
+                case "Pwnhammer": return randomize_hammers;
+                case "Cobalt Drill": return randomize_pickaxes;
+                case "Palladium Drill": return randomize_pickaxes;
+                case "Mythril Drill": return randomize_pickaxes;
+                case "Orichalcum Drill": return randomize_pickaxes;
+                case "Adamantite Drill": return randomize_pickaxes;
+                case "Titanium Drill": return randomize_pickaxes;
+                case "Chlorophyte Drill": return randomize_pickaxes;
+                case "Drax": return randomize_pickaxes;
+                case "Vortex Drill": return randomize_pickaxes;
+                case "Nebula Drill": return randomize_pickaxes;
+                case "Solar Flare Drill": return randomize_pickaxes;
+                case "Stardust Drill": return randomize_pickaxes;
+                case "Vortex Hamaxe": return randomize_hammers;
+                case "Nebula Hamaxe": return randomize_hammers;
+                case "Solar Flare Hamaxe": return randomize_hammers;
+                case "Stardust Hamaxe": return randomize_hammers;
+                case "Laser Drill": return randomize_pickaxes;
+                case "Work Bench": return randomize_crafting_stations;
+                case "Life Crystal": return randomize_crystals;
+                case "Mana Crystal": return randomize_crystals;
+                case "Furnace": return randomize_crafting_stations;
+                case "Iron Anvil": return randomize_crafting_stations;
+                case "Lead Anvil": return randomize_crafting_stations;
+                case "Loom": return randomize_crafting_stations;
+                case "Sawmill": return randomize_crafting_stations;
+                case "Solidifier": return randomize_crafting_stations;
+                case "Hellforge": return randomize_crafting_stations;
+                case "Tinkerer's Workshop": return randomize_crafting_stations;
+                case "Mythril Anvil": return randomize_crafting_stations;
+                case "Orichalcum Anvil": return randomize_crafting_stations;
+                case "Adamantite Forge": return randomize_crafting_stations;
+                case "Titanium Forge": return randomize_crafting_stations;
+                case "Life Fruit": return randomize_crystals;
+                case "Autohammer": return randomize_crafting_stations;
+                case "Ancient Manipulator": return randomize_crafting_stations;
+                case "Chlorophyte Warhammer": return randomize_hammers;
+                case "The Axe": return randomize_hammers;
+                default: return false;
+            }
         }
 
         static readonly Func<bool>[] flags = new[] { () => NPC.downedSlimeKing, () => NPC.downedBoss1, () => NPC.downedBoss2, () => DD2Event.DownedInvasionT1, () => NPC.downedGoblins, () => NPC.downedQueenBee, () => NPC.downedBoss3, () => NPC.downedDeerclops, () => Main.hardMode, () => NPC.downedPirates, () => NPC.downedQueenSlime, () => NPC.downedMechBoss1, () => NPC.downedMechBoss2, () => NPC.downedMechBoss3, () => NPC.downedPlantBoss, () => NPC.downedGolemBoss, () => DD2Event.DownedInvasionT2, () => NPC.downedMartians, () => NPC.downedFishron, () => NPC.downedHalloweenTree, () => NPC.downedHalloweenKing, () => NPC.downedChristmasTree, () => NPC.downedChristmasSantank, () => NPC.downedChristmasIceQueen, () => NPC.downedFrost, () => NPC.downedEmpressOfLight, () => NPC.downedAncientCultist, () => NPC.downedTowerNebula, () => NPC.downedMoonlord };
@@ -136,83 +288,141 @@ namespace SeldomArchipelago.Systems
                 case "Post-Lunatic Cultist": NPC.downedAncientCultist = true; break;
                 case "Post-Lunar Events": NPC.downedTowerNebula = NPC.downedTowerSolar = NPC.downedTowerStardust = NPC.downedTowerVortex = true; break;
                 case "Post-Moon Lord": NPC.downedMoonlord = true; break;
-                case "Reward: Hermes Boots": GiveItem(ItemID.HermesBoots); break;
-                case "Reward: Magic Mirror": GiveItem(ItemID.MagicMirror); break;
-                case "Reward: Demon Conch": GiveItem(ItemID.DemonConch); break;
-                case "Reward: Magic Conch": GiveItem(ItemID.MagicConch); break;
-                case "Reward: Grappling Hook": GiveItem(ItemID.GrapplingHook); break;
-                case "Reward: Cloud in a Bottle": GiveItem(ItemID.CloudinaBottle); break;
-                case "Reward: Climbing Claws": GiveItem(ItemID.ClimbingClaws); break;
-                case "Reward: Ancient Chisel": GiveItem(ItemID.AncientChisel); break;
-                case "Reward: Fledgling Wings": GiveItem(ItemID.CreativeWings); break;
-                case "Reward: Rod of Discord": GiveItem(ItemID.RodofDiscord); break;
-                case "Reward: Aglet": GiveItem(ItemID.Aglet); break;
-                case "Reward: Anklet of the Wind": GiveItem(ItemID.AnkletoftheWind); break;
-                case "Reward: Ice Skates": GiveItem(ItemID.IceSkates); break;
-                case "Reward: Lava Charm": GiveItem(ItemID.LavaCharm); break;
-                case "Reward: Water Walking Boots": GiveItem(ItemID.WaterWalkingBoots); break;
-                case "Reward: Flipper": GiveItem(ItemID.Flipper); break;
-                case "Reward: Frog Leg": GiveItem(ItemID.FrogLeg); break;
-                case "Reward: Shoe Spikes": GiveItem(ItemID.ShoeSpikes); break;
-                case "Reward: Tabi": GiveItem(ItemID.Tabi); break;
-                case "Reward: Black Belt": GiveItem(ItemID.BlackBelt); break;
-                case "Reward: Flying Carpet": GiveItem(ItemID.FlyingCarpet); break;
-                case "Reward: Moon Charm": GiveItem(ItemID.MoonCharm); break;
-                case "Reward: Neptune's Shell": GiveItem(ItemID.NeptunesShell); break;
-                case "Reward: Compass": GiveItem(ItemID.Compass); break;
-                case "Reward: Depth Meter": GiveItem(ItemID.DepthMeter); break;
-                case "Reward: Radar": GiveItem(ItemID.Radar); break;
-                case "Reward: Tally Counter": GiveItem(ItemID.TallyCounter); break;
-                case "Reward: Lifeform Analyzer": GiveItem(ItemID.LifeformAnalyzer); break;
-                case "Reward: DPS Meter": GiveItem(ItemID.DPSMeter); break;
-                case "Reward: Stopwatch": GiveItem(ItemID.Stopwatch); break;
-                case "Reward: Metal Detector": GiveItem(ItemID.MetalDetector); break;
-                case "Reward: Fisherman's Pocket Guide": GiveItem(ItemID.FishermansGuide); break;
-                case "Reward: Weather Radio": GiveItem(ItemID.WeatherRadio); break;
-                case "Reward: Sextant": GiveItem(ItemID.Sextant); break;
-                case "Reward: Band of Regeneration": GiveItem(ItemID.BandofRegeneration); break;
-                case "Reward: Celestial Magnet": GiveItem(ItemID.CelestialMagnet); break;
-                case "Reward: Nature's Gift": GiveItem(ItemID.NaturesGift); break;
-                case "Reward: Philosopher's Stone": GiveItem(ItemID.PhilosophersStone); break;
-                case "Reward: Cobalt Shield": GiveItem(ItemID.CobaltShield); break;
-                case "Reward: Armor Polish": GiveItem(ItemID.ArmorPolish); break;
-                case "Reward: Vitamins": GiveItem(ItemID.Vitamins); break;
-                case "Reward: Bezoar": GiveItem(ItemID.Bezoar); break;
-                case "Reward: Adhesive Bandage": GiveItem(ItemID.AdhesiveBandage); break;
-                case "Reward: Megaphone": GiveItem(ItemID.Megaphone); break;
-                case "Reward: Nazar": GiveItem(ItemID.Nazar); break;
-                case "Reward: Fast Clock": GiveItem(ItemID.FastClock); break;
-                case "Reward: Trifold Map": GiveItem(ItemID.TrifoldMap); break;
-                case "Reward: Blindfold": GiveItem(ItemID.Blindfold); break;
-                case "Reward: Pocket Mirror": GiveItem(ItemID.PocketMirror); break;
-                case "Reward: Paladin's Shield": GiveItem(ItemID.PaladinsShield); break;
-                case "Reward: Frozen Turtle Shell": GiveItem(ItemID.FrozenTurtleShell); break;
-                case "Reward: Flesh Knuckles": GiveItem(ItemID.FleshKnuckles); break;
-                case "Reward: Putrid Scent": GiveItem(ItemID.PutridScent); break;
-                case "Reward: Feral Claws": GiveItem(ItemID.FeralClaws); break;
-                case "Reward: Cross Necklace": GiveItem(ItemID.CrossNecklace); break;
-                case "Reward: Star Cloak": GiveItem(ItemID.StarCloak); break;
-                case "Reward: Titan Glove": GiveItem(ItemID.TitanGlove); break;
-                case "Reward: Obsidian Rose": GiveItem(ItemID.ObsidianRose); break;
-                case "Reward: Magma Stone": GiveItem(ItemID.MagmaStone); break;
-                case "Reward: Shark Tooth Necklace": GiveItem(ItemID.SharkToothNecklace); break;
-                case "Reward: Magic Quiver": GiveItem(ItemID.MagicQuiver); break;
-                case "Reward: Rifle Scope": GiveItem(ItemID.RifleScope); break;
-                case "Reward: Brick Layer": GiveItem(ItemID.BrickLayer); break;
-                case "Reward: Extendo Grip": GiveItem(ItemID.ExtendoGrip); break;
-                case "Reward: Paint Sprayer": GiveItem(ItemID.PaintSprayer); break;
-                case "Reward: Portable Cement Mixer": GiveItem(ItemID.PortableCementMixer); break;
-                case "Reward: Treasure Magnet": GiveItem(ItemID.TreasureMagnet); break;
-                case "Reward: Step Stool": GiveItem(ItemID.PortableStool); break;
-                case "Reward: Discount Card": GiveItem(ItemID.DiscountCard); break;
-                case "Reward: Gold Ring": GiveItem(ItemID.GoldRing); break;
-                case "Reward: Lucky Coin": GiveItem(ItemID.LuckyCoin); break;
-                case "Reward: High Test Fishing Line": GiveItem(ItemID.HighTestFishingLine); break;
-                case "Reward: Angler Earring": GiveItem(ItemID.AnglerEarring); break;
-                case "Reward: Tackle Box": GiveItem(ItemID.TackleBox); break;
-                case "Reward: Lavaproof Fishing Hook": GiveItem(ItemID.LavaFishingHook); break;
-                case "Reward: Red Counterweight": GiveItem(ItemID.RedCounterweight); break;
-                case "Reward: Yoyo Glove": GiveItem(ItemID.YoYoGlove); break;
+                case "Work Bench Unlock": 
+                    GiveUnlock(ItemID.WorkBench); 
+                    break;
+                case "Life Crystal Unlock":
+                    GiveUnlock(ItemID.LifeCrystal);
+                    break;
+                case "Mana Crystal Unlock":
+                    GiveUnlock(ItemID.ManaCrystal);
+                    break;
+                case "Furnace Unlock":
+                    GiveUnlock(ItemID.Furnace);
+                    break;
+                case "Anvil Unlock":
+                    GiveUnlock(ItemID.IronAnvil);
+                    GiveUnlock(ItemID.LeadAnvil);
+                    break;
+                case "Silver Pickaxe Unlock":
+                    GiveUnlock(ItemID.SilverPickaxe);
+                    GiveUnlock(ItemID.TungstenPickaxe);
+                    break;
+                case "Gold Pickaxe Unlock":
+                    GiveUnlock(ItemID.GoldPickaxe);
+                    GiveUnlock(ItemID.PlatinumPickaxe);
+                    GiveUnlock(ItemID.CnadyCanePickaxe);
+                    GiveUnlock(ItemID.BonePickaxe);
+                    break;
+                case "Fossil Pickaxe Unlock":
+                    GiveUnlock(ItemID.FossilPickaxe);
+                    break;
+                case "Loom Unlock":
+                    GiveUnlock(ItemID.Loom);
+                    break;
+                case "Sawmill Unlock":
+                    GiveUnlock(ItemID.Sawmill);
+                    break;
+                case "Solidifier Unlock":
+                    GiveUnlock(ItemID.Solidifier);
+                    break;
+                case "Nightmare Pickaxe Unlock":
+                    GiveUnlock(ItemID.NightmarePickaxe);
+                    GiveUnlock(ItemID.DeathbringerPickaxe);
+                    GiveUnlock(ItemID.ReaverShark);
+                    break;
+                case "Hellforge Unlock":
+                    GiveUnlock(ItemID.Hellforge);
+                    break;
+                case "Molten Pickaxe Unlock":
+                    GiveUnlock(ItemID.MoltenPickaxe);
+                    break;
+                case "Tinkerer's Workshop Unlock":
+                    GiveUnlock(ItemID.TinkerersWorkshop);
+                    break;
+                case "Pwnhammer Unlock":
+                    GiveUnlock(ItemID.Pwnhammer);
+                    break;
+                case "Cobalt Pickaxe Unlock":
+                    GiveUnlock(ItemID.CobaltPickaxe);
+                    GiveUnlock(ItemID.PalladiumPickaxe);
+                    GiveUnlock(ItemID.CobaltDrill);
+                    GiveUnlock(ItemID.PalladiumDrill);
+                    break;
+                case "Hardmode Anvil Unlock":
+                    GiveUnlock(ItemID.MythrilAnvil);
+                    GiveUnlock(ItemID.OrichalcumAnvil);
+                    break;
+                case "Mythril Pickaxe Unlock":
+                    GiveUnlock(ItemID.MythrilPickaxe);
+                    GiveUnlock(ItemID.OrichalcumPickaxe);
+                    GiveUnlock(ItemID.MythrilDrill);
+                    GiveUnlock(ItemID.OrichalcumDrill);
+                    break;
+                case "Hardmode Forge Unlock":
+                    GiveUnlock(ItemID.AdamantiteForge);
+                    GiveUnlock(ItemID.TitaniumForge);
+                    break;
+                case "Adamantite Pickaxe Unlock":
+                    GiveUnlock(ItemID.AdamantitePickaxe);
+                    GiveUnlock(ItemID.TitaniumPickaxe);
+                    GiveUnlock(ItemID.AdamantiteDrill);
+                    GiveUnlock(ItemID.TitaniumDrill);
+                    break;
+                case "Life Fruit Unlock":
+                    GiveUnlock(ItemID.LifeFruit);
+                    break;
+                case "Pickaxe Axe Unlock":
+                    GiveUnlock(ItemID.PickaxeAxe);
+                    break;
+                case "Chlorophyte Pickaxe Unlock":
+                    GiveUnlock(ItemID.ChlorophytePickaxe);
+                    GiveUnlock(ItemID.ChlorophyteDrill);
+                    break;
+                case "Chlorophyte Warhammer Unlock":
+                    GiveUnlock(ItemID.ChlorophyteWarhammer);
+                    break;
+                case "Shroomite Digging Claw Unlock":
+                    GiveUnlock(ItemID.ShroomiteDiggingClaw);
+                    break;
+                case "Spectre Pickaxe Unlock":
+                    GiveUnlock(ItemID.SpectrePickaxe);
+                    break;
+                case "Drax Unlock":
+                    GiveUnlock(ItemID.Drax);
+                    break;
+                case "The Axe Unlock":
+                    GiveUnlock(ItemID.TheAxe);
+                    break;
+                case "Autohammer Unlock":
+                    GiveUnlock(ItemID.Autohammer);
+                    break;
+                case "Spectre Hamaxe Unlock":
+                    GiveUnlock(ItemID.SpectreHamaxe);
+                    break;
+                case "Picksaw Unlock":
+                    GiveUnlock(ItemID.Picksaw);
+                    GiveUnlock(ItemID.LaserDrill);
+                    break;
+                case "Ancient Manipulator Unlock":
+                    GiveUnlock(ItemID.LunarCraftingStation);
+                    break;
+                case "Luminite Pickaxe Unlock":
+                    GiveUnlock(ItemID.VortexPickaxe);
+                    GiveUnlock(ItemID.NebulaPickaxe);
+                    GiveUnlock(ItemID.SolarFlarePickaxe);
+                    GiveUnlock(ItemID.StardustPickaxe);
+                    GiveUnlock(ItemID.VortexDrill);
+                    GiveUnlock(ItemID.NebulaDrill);
+                    GiveUnlock(ItemID.SolarFlareDrill);
+                    GiveUnlock(ItemID.StardustDrill);
+                    break;
+                case "Luminite Hamaxe Unlock":
+                    GiveUnlock(ItemID.LunarHamaxeNebula);
+                    GiveUnlock(ItemID.LunarHamaxeSolar);
+                    GiveUnlock(ItemID.LunarHamaxeStardust);
+                    GiveUnlock(ItemID.LunarHamaxeVortex);
+                    break;
                 case "Reward: Coins":
                     var flagCount = 0;
                     foreach (var flag in flags) if (flag()) flagCount++;
@@ -489,6 +699,19 @@ namespace SeldomArchipelago.Systems
             packet.Send();
         }
 
+        public void GiveUnlock(int item, int count = 1)
+        {
+            for (var i = 0; i < Main.maxPlayers; i++)
+            {
+                var player = Main.player[i];
+                if (player.active)
+                {
+                    player.GetModPlayer<ArchipelagoPlayer>().obtainedItems.Add(ItemID.Search.GetName(item));
+                    Console.WriteLine(ItemID.Search.GetName(item));
+                }
+            }
+        }
+
         public void GiveItem(int item, int count = 1)
         {
             for (var i = 0; i < Main.maxPlayers; i++)
@@ -505,7 +728,10 @@ namespace SeldomArchipelago.Systems
                         if (gold > 0) player.QuickSpawnItem(player.GetSource_GiftOrReward(), ItemID.GoldCoin, gold);
                         if (silver > 0) player.QuickSpawnItem(player.GetSource_GiftOrReward(), ItemID.SilverCoin, silver);
                     }
-                    else player.QuickSpawnItem(player.GetSource_GiftOrReward(), item, count);
+                    else
+                    {
+                        player.QuickSpawnItem(player.GetSource_GiftOrReward(), item, count);
+                    }
                 }
             }
         }

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
-  <Import Project="..\tModLoader.targets" />
+  <Import Project="..\tMLMod.targets" />
   <PropertyGroup>
     <AssemblyName>SeldomArchipelago</AssemblyName>
     <TargetFramework>net6.0</TargetFramework>
@@ -13,9 +13,6 @@
   <ItemGroup>
     <Reference Include="Archipelago.MultiClient.Net">
       <HintPath>lib\Archipelago.MultiClient.Net.dll</HintPath>
-    </Reference>
-    <Reference Include="Newtonsoft.Json">
-      <HintPath>lib\Newtonsoft.Json.dll</HintPath>
     </Reference>
   </ItemGroup>
 </Project>

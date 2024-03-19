@@ -15,6 +15,7 @@ namespace SeldomArchipelago.Players
     {
         TagCompound achievements = new();
         bool inWorld = false;
+        public List<string> obtainedItems = new();
 
         public override void OnEnterWorld(Player player)
         {
@@ -88,6 +89,7 @@ namespace SeldomArchipelago.Players
             }
 
             tag["apachievements"] = serAchievements;
+            tag["obtaineditemsap"] = obtainedItems;
         }
 
         public override void LoadData(TagCompound tag)
@@ -98,6 +100,7 @@ namespace SeldomArchipelago.Players
             if (!tag.ContainsKey("apachievements")) return;
 
             achievements = tag.Get<TagCompound>("apachievements");
+            obtainedItems = tag.Get<List<string>>("obtaineditemsap");
         }
 
         public override void Kill(double damage, int hitDirection, bool pvp, PlayerDeathReason damageSource)
@@ -113,6 +116,38 @@ namespace SeldomArchipelago.Players
             var packet = ModContent.GetInstance<SeldomArchipelago>().GetPacket();
             packet.Write($"deathlink{damageSource.GetDeathText(Player.name)}");
             packet.Send();
+        }
+        public override void PreUpdate()
+        {
+            if (Main.myPlayer == Player.whoAmI)
+            {
+                var archipelagoSystem = ModContent.GetInstance<ArchipelagoSystem>();
+                var apPlayer = Player.GetModPlayer<ArchipelagoPlayer>();
+                for (int i = 0; i < 58; i++)
+                {
+                    Item item = Player.inventory[i];
+                    if (!item.IsAir && item.netID == ItemID.Wood)
+                    {
+                        ModContent.GetInstance<ArchipelagoSystem>().QueueLocationClient("Get Wood");
+                    }
+                    if (!item.IsAir && archipelagoSystem.IsBannedItem(item.Name))
+                    {
+                        if (!apPlayer.obtainedItems.Contains(ItemID.Search.GetName(item.netID)))
+                        {
+                            archipelagoSystem.Chat("You have not recieved this item yet!", Player.whoAmI);
+                            item.TurnToAir();
+                        }
+                        else
+                        {
+                            var loc_name = archipelagoSystem.GetBannedItemLocation(item.Name);
+                            if (loc_name != null)
+                            {
+                                ModContent.GetInstance<ArchipelagoSystem>().QueueLocationClient(loc_name);
+                            }
+                        }
+                    }
+                }
+            }
         }
     }
 }
